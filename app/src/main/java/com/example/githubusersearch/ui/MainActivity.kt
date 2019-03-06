@@ -15,7 +15,7 @@ import com.example.githubusersearch.utils.GlideApp
 import com.example.githubusersearch.viewmodel.SearchUsersViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import androidx.recyclerview.widget.DividerItemDecoration
-
+import com.example.githubusersearch.vo.NetworkState
 
 
 class MainActivity : AppCompatActivity() {
@@ -29,8 +29,16 @@ class MainActivity : AppCompatActivity() {
         initViewModel()
         initAdapter()
         initRecyclerViewUI()
+        initRefreshListener()
         //TODO: Remove this debug line below
         searchUsersViewModel.showSearchRes("pikachu")
+    }
+
+    private fun initRefreshListener() {
+        github_user_list_swipe_to_refresh.setOnRefreshListener {
+            //TODO: Replace with text from textview
+            searchUsersViewModel.showSearchRes("pikachu")
+        }
     }
 
     private fun initRecyclerViewUI() {
@@ -54,7 +62,12 @@ class MainActivity : AppCompatActivity() {
         })
 
         searchUsersViewModel.networkState.observe(this, Observer {
-            adapter.setNetworkState(it)
+            triggerLoader(adapter, it)
         })
+    }
+
+    private fun triggerLoader(adapter: GithubUsersAdapter, networkState: NetworkState) {
+        github_user_list_swipe_to_refresh.isRefreshing = adapter.itemCount == 0
+        adapter.setNetworkState(networkState)
     }
 }
