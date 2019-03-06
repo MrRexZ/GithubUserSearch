@@ -3,22 +3,22 @@ package com.example.githubusersearch.repository.pagination
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.PageKeyedDataSource
 import com.example.githubusersearch.api.GithubAPIService
-import com.example.githubusersearch.api.response.Item
+import com.example.githubusersearch.api.response.GithubUserItem
 import com.example.githubusersearch.vo.NetworkState
 
 //TODO: Implement retry mechanism on network ERROR
 class GithubPageKeyDataSource(
     private val query: String,
     private val api: GithubAPIService
-) : PageKeyedDataSource<Int, Item>() {
+) : PageKeyedDataSource<Int, GithubUserItem>() {
 
     val network = MutableLiveData<NetworkState>()
 
-    override fun loadBefore(params: LoadParams<Int>, callback: LoadCallback<Int, Item>) {
+    override fun loadBefore(params: LoadParams<Int>, callback: LoadCallback<Int, GithubUserItem>) {
         //Not implemented because there is no prepend functionality
     }
 
-    override fun loadInitial(params: LoadInitialParams<Int>, callback: LoadInitialCallback<Int, Item>) {
+    override fun loadInitial(params: LoadInitialParams<Int>, callback: LoadInitialCallback<Int, GithubUserItem>) {
         val currentPage = 1
         val nextPage = currentPage + 1
         postNetworkState(NetworkState.LOADING)
@@ -32,7 +32,7 @@ class GithubPageKeyDataSource(
         })
     }
 
-    override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<Int, Item>) {
+    override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<Int, GithubUserItem>) {
         val currentPage = params.key
         val nextPage = currentPage + 1
         postNetworkState(NetworkState.LOADING)

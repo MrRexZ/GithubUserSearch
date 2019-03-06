@@ -8,6 +8,6 @@ class SearchUsersResponse {
     @SerializedName("incomplete_results")
     var incompleteResults: Boolean? = null
     @SerializedName("items")
-    var items: List<Item>? = null
+    var items: List<GithubUserItem>? = null
 }
 
