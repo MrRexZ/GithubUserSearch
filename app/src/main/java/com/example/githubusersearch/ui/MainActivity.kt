@@ -2,6 +2,7 @@ package com.example.githubusersearch.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.LinearLayout.VERTICAL
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -13,6 +14,9 @@ import com.example.githubusersearch.repository.GithubRepository
 import com.example.githubusersearch.utils.GlideApp
 import com.example.githubusersearch.viewmodel.SearchUsersViewModel
 import kotlinx.android.synthetic.main.activity_main.*
+import androidx.recyclerview.widget.DividerItemDecoration
+
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -24,8 +28,14 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         initViewModel()
         initAdapter()
+        initRecyclerViewUI()
         //TODO: Remove this debug line below
         searchUsersViewModel.showSearchRes("pikachu")
+    }
+
+    private fun initRecyclerViewUI() {
+        val decoration = DividerItemDecoration(applicationContext, VERTICAL)
+        github_users_list_rv.addItemDecoration(decoration)
     }
 
     private fun initViewModel() {

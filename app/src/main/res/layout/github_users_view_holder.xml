@@ -7,9 +7,8 @@
 
     <ImageView
         android:id="@+id/github_user_image"
-        android:layout_width="25dp"
-        android:layout_height="25dp"
-        android:background="@color/colorAccent" />
+        android:layout_width="30dp"
+        android:layout_height="30dp" />
 
     <TextView
         android:id="@+id/github_username_title"
