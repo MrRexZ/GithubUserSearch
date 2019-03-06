@@ -11,9 +11,14 @@ class SearchUsersViewModel(private val githubRepository: GithubRepository) : Vie
     private val itemResult = map(query) {
         githubRepository.searchUsers(it)
     }
-    private val items = switchMap(itemResult) {
+    val items = switchMap(itemResult) {
         it.pagedList
     }
+
+    val networkState = switchMap(itemResult) {
+        it.networkState
+    }
+
     fun showSearchRes(query: String) {
         this.query.value = query
     }
