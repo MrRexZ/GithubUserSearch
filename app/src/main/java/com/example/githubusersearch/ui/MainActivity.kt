@@ -52,5 +52,9 @@ class MainActivity : AppCompatActivity() {
         searchUsersViewModel.items.observe(this, Observer<PagedList<GithubUserItem>> {
             adapter.submitList(it)
         })
+
+        searchUsersViewModel.networkState.observe(this, Observer {
+            adapter.setNetworkState(it)
+        })
     }
 }
