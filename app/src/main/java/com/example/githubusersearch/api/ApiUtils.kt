@@ -11,7 +11,7 @@ object ApiUtils {
 
         request.enqueue(object : Callback<T> {
             override fun onFailure(call: Call<T>, t: Throwable) {
-                onError(t.message ?: "Unknown error occurred!")
+                onError(t.message ?: "Unknown ERROR occurred!")
             }
 
             override fun onResponse(call: Call<T>, response: Response<T>) {
