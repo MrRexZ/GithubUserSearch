@@ -24,7 +24,6 @@ class GithubPageKeyDataSource(
         postNetworkState(NetworkState.LOADING)
         api.searchUsers(query, currentPage, onSuccess = { response ->
             val items = response?.items ?: emptyList()
-            invalidate()
             callback.onResult(items, currentPage, nextPage)
             postNetworkState(NetworkState.LOADED)
         }, onFailure = {
@@ -39,7 +38,6 @@ class GithubPageKeyDataSource(
         postNetworkState(NetworkState.LOADING)
         api.searchUsers(query, currentPage, onSuccess = { response ->
             val items = response?.items ?: emptyList()
-            invalidate()
             callback.onResult(items, nextPage)
             postNetworkState(NetworkState.LOADED)
         }, onFailure = {

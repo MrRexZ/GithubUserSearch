@@ -19,6 +19,12 @@ class SearchUsersViewModel(private val githubRepository: GithubRepository) : Vie
         it.networkState
     }
 
+    val showEmptyUserList = switchMap(itemResult) {
+        map(it.pagedListHasData) { hasData ->
+            !hasData
+        }
+    }
+
     fun showSearchRes(query: String) {
         this.query.postValue(query)
     }

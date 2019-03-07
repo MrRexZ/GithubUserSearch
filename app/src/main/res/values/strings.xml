@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">GithubUserSearch</string>
     <string name="search_github_users">Search Github users</string>
+    <string name="no_user_found_search_query">There is no users found from the given search query</string>
+    <string name="welcome_search">Welcome, type on the search bar above to start searching!</string>
+    <string name="input_text_to_search">Please enter text to search bar above and enter to perform search!</string>
 </resources>

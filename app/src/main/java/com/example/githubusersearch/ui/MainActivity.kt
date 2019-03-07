@@ -3,6 +3,7 @@ package com.example.githubusersearch.ui
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.LinearLayout.VERTICAL
+import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -24,21 +25,59 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var searchUsersViewModel: SearchUsersViewModel
     private val glideRequests by lazy { GlideApp.with(this) }
-
+    private lateinit var adapter: GithubUsersAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        showWelcomePage()
         initViewModel()
+        initPageTypeObsv()
         initAdapter()
         initRecyclerViewUI()
         initRefreshListener()
         initKeywordSearchListener()
+
+    }
+
+    private fun showEmptyListPage() {
+        content_view_flipper.displayedChild = 1
+    }
+
+    private fun showListPage() {
+        content_view_flipper.displayedChild = 0
+    }
+
+    private fun showWelcomePage() {
+        content_view_flipper.displayedChild = 2
+    }
+
+    private fun initPageTypeObsv() {
+        searchUsersViewModel.showEmptyUserList.observe(this, Observer { shouldShowEmptyPage ->
+            if (shouldShowEmptyPage) {
+                showEmptyListPage()
+            } else {
+                showListPage()
+            }
+        })
+    }
+
+    private fun searchUser() {
+        if (user_search_view.query.toString().isEmpty()) {
+            handleNoTextSearch()
+        } else {
+            searchUsersViewModel.showSearchRes(user_search_view.query.toString())
+        }
+    }
+
+    private fun handleNoTextSearch() {
+        Toast.makeText(this, getString(R.string.input_text_to_search), Toast.LENGTH_LONG).show()
+        triggerLoader(NetworkState.LOADED)
     }
 
     private fun initKeywordSearchListener() {
         user_search_view.setOnQueryTextListener(object : androidx.appcompat.widget.SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
-                searchUsersViewModel.showSearchRes(user_search_view.query.toString())
+                searchUser()
                 return true
             }
 
@@ -50,7 +89,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun initRefreshListener() {
         github_user_list_swipe_to_refresh.setOnRefreshListener {
-            searchUsersViewModel.showSearchRes(user_search_view.query.toString())
+            searchUser()
         }
     }
 
@@ -68,7 +107,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initAdapter() {
-        val adapter = GithubUsersAdapter(glideRequests)
+        adapter = GithubUsersAdapter(glideRequests)
         github_users_list_rv.adapter = adapter
         searchUsersViewModel.items.observe(this, Observer<PagedList<GithubUserItem>> {
             adapter.submitList(it)
@@ -78,16 +117,16 @@ class MainActivity : AppCompatActivity() {
             if (it.status == Status.FAILED) {
                 if (it.exception is GithubApiException) {
                     val githubErrorResponse = it.exception.githubErrorResponse
-                    //TODO: handle displaying of error to screen
+                    Toast.makeText(this, "Error:" + githubErrorResponse.errorMessage, Toast.LENGTH_LONG).show()
                 }
             } else {
-                triggerLoader(adapter, it)
+                triggerLoader(it)
+                adapter.setNetworkState(it)
             }
         })
     }
 
-    private fun triggerLoader(adapter: GithubUsersAdapter, networkState: NetworkState) {
-        github_user_list_swipe_to_refresh.isRefreshing = adapter.itemCount == 0
-        adapter.setNetworkState(networkState)
+    private fun triggerLoader(networkState: NetworkState) {
+        github_user_list_swipe_to_refresh.isRefreshing = adapter.itemCount == 0 && networkState.status == Status.RUNNING
     }
 }
