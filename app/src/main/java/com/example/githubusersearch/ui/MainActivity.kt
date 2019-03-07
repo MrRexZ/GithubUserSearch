@@ -9,13 +9,15 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.paging.PagedList
 import com.example.githubusersearch.R
-import com.example.githubusersearch.api.response.GithubUserItem
+import com.example.githubusersearch.api.github.response.GithubUserItem
 import com.example.githubusersearch.repository.GithubRepository
 import com.example.githubusersearch.utils.GlideApp
 import com.example.githubusersearch.viewmodel.SearchUsersViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import androidx.recyclerview.widget.DividerItemDecoration
+import com.example.githubusersearch.api.github.GithubApiException
 import com.example.githubusersearch.vo.NetworkState
+import com.example.githubusersearch.vo.Status
 
 
 class MainActivity : AppCompatActivity() {
@@ -30,14 +32,25 @@ class MainActivity : AppCompatActivity() {
         initAdapter()
         initRecyclerViewUI()
         initRefreshListener()
-        //TODO: Remove this debug line below
-        searchUsersViewModel.showSearchRes("pikachu")
+        initKeywordSearchListener()
+    }
+
+    private fun initKeywordSearchListener() {
+        user_search_view.setOnQueryTextListener(object : androidx.appcompat.widget.SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String): Boolean {
+                searchUsersViewModel.showSearchRes(user_search_view.query.toString())
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String): Boolean {
+                return false
+            }
+        })
     }
 
     private fun initRefreshListener() {
         github_user_list_swipe_to_refresh.setOnRefreshListener {
-            //TODO: Replace with text from textview
-            searchUsersViewModel.showSearchRes("pikachu")
+            searchUsersViewModel.showSearchRes(user_search_view.query.toString())
         }
     }
 
@@ -62,7 +75,14 @@ class MainActivity : AppCompatActivity() {
         })
 
         searchUsersViewModel.networkState.observe(this, Observer {
-            triggerLoader(adapter, it)
+            if (it.status == Status.FAILED) {
+                if (it.exception is GithubApiException) {
+                    val githubErrorResponse = it.exception.githubErrorResponse
+                    //TODO: handle displaying of error to screen
+                }
+            } else {
+                triggerLoader(adapter, it)
+            }
         })
     }
 

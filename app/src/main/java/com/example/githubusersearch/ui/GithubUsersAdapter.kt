@@ -5,7 +5,7 @@ import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.githubusersearch.R
-import com.example.githubusersearch.api.response.GithubUserItem
+import com.example.githubusersearch.api.github.response.GithubUserItem
 import com.example.githubusersearch.utils.GlideRequests
 import com.example.githubusersearch.vo.NetworkState
 

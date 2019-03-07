@@ -2,8 +2,8 @@ package com.example.githubusersearch.repository.pagination
 
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.DataSource
-import com.example.githubusersearch.api.GithubAPIService
-import com.example.githubusersearch.api.response.GithubUserItem
+import com.example.githubusersearch.api.github.GithubAPIService
+import com.example.githubusersearch.api.github.response.GithubUserItem
 
 class GithubDataSourceFactory(private val query: String, private val api: GithubAPIService) : DataSource.Factory<Int, GithubUserItem>() {
 

@@ -2,8 +2,8 @@ package com.example.githubusersearch.repository.pagination
 
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.PageKeyedDataSource
-import com.example.githubusersearch.api.GithubAPIService
-import com.example.githubusersearch.api.response.GithubUserItem
+import com.example.githubusersearch.api.github.GithubAPIService
+import com.example.githubusersearch.api.github.response.GithubUserItem
 import com.example.githubusersearch.vo.NetworkState
 
 //TODO: Implement retry mechanism on network ERROR
@@ -24,6 +24,7 @@ class GithubPageKeyDataSource(
         postNetworkState(NetworkState.LOADING)
         api.searchUsers(query, currentPage, onSuccess = { response ->
             val items = response?.items ?: emptyList()
+            invalidate()
             callback.onResult(items, currentPage, nextPage)
             postNetworkState(NetworkState.LOADED)
         }, onFailure = {
@@ -38,6 +39,7 @@ class GithubPageKeyDataSource(
         postNetworkState(NetworkState.LOADING)
         api.searchUsers(query, currentPage, onSuccess = { response ->
             val items = response?.items ?: emptyList()
+            invalidate()
             callback.onResult(items, nextPage)
             postNetworkState(NetworkState.LOADED)
         }, onFailure = {

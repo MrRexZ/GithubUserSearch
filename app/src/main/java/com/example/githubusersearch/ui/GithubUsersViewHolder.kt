@@ -7,7 +7,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.githubusersearch.R
-import com.example.githubusersearch.api.response.GithubUserItem
+import com.example.githubusersearch.api.github.response.GithubUserItem
 import com.example.githubusersearch.utils.GlideRequests
 
 class GithubUsersViewHolder(view: View, val glideRequests: GlideRequests) : RecyclerView.ViewHolder(view) {

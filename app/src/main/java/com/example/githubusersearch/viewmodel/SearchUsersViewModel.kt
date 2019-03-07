@@ -20,7 +20,7 @@ class SearchUsersViewModel(private val githubRepository: GithubRepository) : Vie
     }
 
     fun showSearchRes(query: String) {
-        this.query.value = query
+        this.query.postValue(query)
     }
 
 }
