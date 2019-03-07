@@ -61,11 +61,15 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
-    private fun searchUser() {
+    private fun searchUser(retry: Boolean) {
         if (user_search_view.query.toString().isEmpty()) {
             handleNoTextSearch()
         } else {
-            searchUsersViewModel.showSearchRes(user_search_view.query.toString())
+            if (retry) {
+                searchUsersViewModel.retrySearch()
+            } else {
+                searchUsersViewModel.showSearchRes(user_search_view.query.toString())
+            }
         }
     }
 
@@ -77,7 +81,7 @@ class MainActivity : AppCompatActivity() {
     private fun initKeywordSearchListener() {
         user_search_view.setOnQueryTextListener(object : androidx.appcompat.widget.SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
-                searchUser()
+                searchUser(false)
                 return true
             }
 
@@ -89,7 +93,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun initRefreshListener() {
         github_user_list_swipe_to_refresh.setOnRefreshListener {
-            searchUser()
+            searchUser(true)
         }
     }
 
@@ -120,9 +124,9 @@ class MainActivity : AppCompatActivity() {
                     Toast.makeText(this, "Error:" + githubErrorResponse.errorMessage, Toast.LENGTH_LONG).show()
                 }
             } else {
-                triggerLoader(it)
                 adapter.setNetworkState(it)
             }
+            triggerLoader(it)
         })
     }
 

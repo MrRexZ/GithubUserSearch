@@ -29,4 +29,8 @@ class SearchUsersViewModel(private val githubRepository: GithubRepository) : Vie
         this.query.postValue(query)
     }
 
+    fun retrySearch() {
+        this.query.postValue(query.value)
+    }
+
 }
