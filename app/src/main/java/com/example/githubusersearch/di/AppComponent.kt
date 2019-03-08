@@ -6,8 +6,6 @@ import com.example.githubusersearch.di.github.GithubModule
 import dagger.Component
 import dagger.Module
 import dagger.Provides
-import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
 import javax.inject.Singleton
 
 @Singleton
@@ -22,5 +20,4 @@ class AppModule(val app: GithubApp) {
     @Provides
     @Singleton
     fun provideApp() = app
-
 }
