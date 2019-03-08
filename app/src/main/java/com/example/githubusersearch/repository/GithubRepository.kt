@@ -10,10 +10,4 @@ import java.util.concurrent.Executors
 
 interface GithubRepository {
     fun searchUsers(query: String): Listing<GithubUserItem>
-
-    companion object {
-        fun create(): InMemoryGithubPageKeyRepository {
-            return InMemoryGithubPageKeyRepository(GithubAPIService(NetworkAPI.create()), Executors.newFixedThreadPool(4))
-        }
-    }
 }

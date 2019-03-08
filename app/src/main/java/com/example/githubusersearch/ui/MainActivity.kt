@@ -16,7 +16,10 @@ import com.example.githubusersearch.utils.GlideApp
 import com.example.githubusersearch.viewmodel.SearchUsersViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import androidx.recyclerview.widget.DividerItemDecoration
+import com.example.githubusersearch.GithubApp
 import com.example.githubusersearch.api.github.GithubApiException
+import com.example.githubusersearch.di.createViewModel
+import com.example.githubusersearch.di.github.GithubModule
 import com.example.githubusersearch.vo.NetworkState
 import com.example.githubusersearch.vo.Status
 import kotlinx.android.synthetic.main.error_view.view.*
@@ -27,9 +30,13 @@ class MainActivity : AppCompatActivity() {
     private lateinit var searchUsersViewModel: SearchUsersViewModel
     private val glideRequests by lazy { GlideApp.with(this) }
     private lateinit var adapter: GithubUsersAdapter
+    val component by lazy {
+        (application as GithubApp).component.plus(GithubModule(this))
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        component.inject(this)
         showWelcomePage()
         initViewModel()
         initPageTypeObsv()
@@ -109,11 +116,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initViewModel() {
-        searchUsersViewModel = ViewModelProviders.of(this, object : ViewModelProvider.Factory {
-            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                return SearchUsersViewModel(GithubRepository.create()) as T
-            }
-        }).get(SearchUsersViewModel::class.java)
+        searchUsersViewModel = createViewModel { component.searchUsersViewModel() }
     }
 
     private fun initAdapter() {

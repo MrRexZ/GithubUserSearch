@@ -10,8 +10,10 @@ import androidx.paging.PagedList
 import com.example.githubusersearch.api.github.response.GithubUserItem
 import com.example.githubusersearch.repository.GithubRepository
 import com.example.githubusersearch.vo.NetworkState
+import javax.inject.Inject
 
-class SearchUsersViewModel(private val githubRepository: GithubRepository) : ViewModel() {
+
+class SearchUsersViewModel @Inject constructor(val githubRepository: GithubRepository) : ViewModel() {
     private val query = MutableLiveData<String>()
     private val itemResult = map(query) {
         githubRepository.searchUsers(it)
