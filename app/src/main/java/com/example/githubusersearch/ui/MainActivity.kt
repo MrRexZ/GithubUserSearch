@@ -125,10 +125,7 @@ class MainActivity : AppCompatActivity() {
 
         searchUsersViewModel.networkState.observe(this, Observer {
             if (it.status == Status.FAILED) {
-                if (it.exception is GithubApiException) {
-                    val githubErrorResponse = it.exception.githubErrorResponse
-                    showErrorPage("Error: " + githubErrorResponse.errorMessage)
-                }
+                showErrorPage(it.exception?.message!!)
             } else {
                 adapter.setNetworkState(it)
             }

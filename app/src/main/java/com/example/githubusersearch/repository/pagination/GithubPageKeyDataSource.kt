@@ -27,7 +27,7 @@ class GithubPageKeyDataSource(
             callback.onResult(items, currentPage, nextPage)
             postNetworkState(NetworkState.LOADED)
         }, onFailure = {
-            //TODO: Implement failure handling
+            //
             postNetworkState(NetworkState.error(it))
         })
     }

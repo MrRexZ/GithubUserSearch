@@ -20,4 +20,7 @@ open class GithubApiException(val statusCode: Int, val githubErrorResponse: Gith
         result = 31 * result + githubErrorResponse.hashCode()
         return result
     }
+
+    override val message: String?
+        get() = String.format("%s %s", GithubApiException::class.simpleName, githubErrorResponse.errorMessage)
 }
