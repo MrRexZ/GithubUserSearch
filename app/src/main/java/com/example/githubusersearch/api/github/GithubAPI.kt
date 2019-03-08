@@ -19,12 +19,17 @@ interface GithubAPI {
 
     companion object {
         private const val BASE_URL = "https://api.github.com/"
-        fun create(): GithubAPI {
+        val client: OkHttpClient = createOkHttpClient()
+
+        private fun createOkHttpClient(): OkHttpClient {
             val interceptor = HttpLoggingInterceptor()
             interceptor.level = HttpLoggingInterceptor.Level.BODY
-            val client = OkHttpClient.Builder()
+            return OkHttpClient.Builder()
                 .addInterceptor(interceptor)
                 .build()
+        }
+
+        fun create(): GithubAPI {
             return Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .client(client)
