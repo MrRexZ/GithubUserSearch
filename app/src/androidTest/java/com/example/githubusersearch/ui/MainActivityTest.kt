@@ -36,8 +36,7 @@ class MainActivityTest {
         onView(withId(R.id.empty_list_view)).check(matches(not(isDisplayed())))
         onView(withId(R.id.github_user_list_swipe_to_refresh)).check(matches(not(isDisplayed())))
     }
-
-
+    
     @Test
     fun showSearchResultIfSearchSuccess() {
         attemptShowSuccessfulRes()

@@ -6,22 +6,25 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations.map
 import androidx.lifecycle.Transformations.switchMap
 import androidx.lifecycle.ViewModel
+import androidx.paging.PagedList
+import com.example.githubusersearch.api.github.response.GithubUserItem
 import com.example.githubusersearch.repository.GithubRepository
+import com.example.githubusersearch.vo.NetworkState
 
 class SearchUsersViewModel(private val githubRepository: GithubRepository) : ViewModel() {
     private val query = MutableLiveData<String>()
     private val itemResult = map(query) {
         githubRepository.searchUsers(it)
     }
-    val items = switchMap(itemResult) {
+    val items: LiveData<PagedList<GithubUserItem>> = switchMap(itemResult) {
         it.pagedList
     }
 
-    val networkState = switchMap(itemResult) {
+    val networkState: LiveData<NetworkState> = switchMap(itemResult) {
         it.networkState
     }
 
-    val showEmptyUserList = switchMap(itemResult) {
+    val showEmptyUserList: LiveData<Boolean> = switchMap(itemResult) {
         map(it.pagedListHasData) { hasData ->
             !hasData
         }
