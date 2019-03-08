@@ -37,29 +37,49 @@ class MainActivityTest {
         onView(withId(R.id.github_user_list_swipe_to_refresh)).check(matches(not(isDisplayed())))
     }
 
-    @Test
-    fun showSearchScreenAfterSearchEnter() {
-        onView(withId(R.id.user_search_view)).perform(typeSearchViewText("anthony tjuatja")).perform(click())
-        onView(withId(R.id.github_user_list_swipe_to_refresh)).check(matches(isDisplayed()))
-    }
 
     @Test
     fun showSearchResultIfSearchSuccess() {
-        onView(withId(R.id.user_search_view)).perform(typeSearchViewText("anthony tjuatja")).perform(click())
-        onView(withId(R.id.github_user_list_swipe_to_refresh)).check(matches(isDisplayed()))
-        assert(rule.activity.github_users_list_rv.adapter!!.itemCount > 0)
+        attemptShowSuccessfulRes()
     }
 
     @Test
     fun emptySearchShowEmptyScreenResult() {
-        onView(withId(R.id.user_search_view)).perform(typeSearchViewText("asdsadadafgdsdfsfdsfdsfsfqweqeqeqwewqasdsadad")).perform(click())
-        onView(withId(R.id.empty_list_view)).check(matches(isDisplayed()))
+        attemptShowEmptySearchRes()
     }
 
     @Test
     fun showSearchFailScreenIfSearchFail() {
+        attemptShowGithubApiErrorRes()
+    }
+
+    @Test
+    fun canShowSuccessfulSearchResultAfterFailScreenShows() {
+        attemptShowGithubApiErrorRes()
+        attemptShowSuccessfulRes()
+    }
+
+    @Test
+    fun canShowSuccessfulSearchResultAfterEmptyScreenShows() {
+        attemptShowEmptySearchRes()
+        attemptShowSuccessfulRes()
+    }
+
+    private fun attemptShowEmptySearchRes() {
+        onView(withId(R.id.user_search_view)).perform(typeSearchViewText("asdsadadafgdsdfsfdsfdsfsfqweqeqeqwewqasdsadad"))
+            .perform(click())
+        onView(withId(R.id.empty_list_view)).check(matches(isDisplayed()))
+    }
+
+    private fun attemptShowGithubApiErrorRes() {
         onView(withId(R.id.user_search_view)).perform(typeSearchViewText("\\")).perform(click())
         onView(withId(R.id.error_view)).check(matches(isDisplayed()))
+    }
+
+    private fun attemptShowSuccessfulRes() {
+        onView(withId(R.id.user_search_view)).perform(typeSearchViewText("anthony tjuatja")).perform(click())
+        onView(withId(R.id.github_user_list_swipe_to_refresh)).check(matches(isDisplayed()))
+        assert(rule.activity.github_users_list_rv.adapter!!.itemCount > 0)
     }
 
 
