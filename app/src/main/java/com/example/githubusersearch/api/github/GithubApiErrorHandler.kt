@@ -10,7 +10,7 @@ class GithubApiErrorHandler : ApiErrorHandler {
     private val gson: Gson = Gson()
     override fun getException(response: Response<*>): Exception {
         val githubErr = gson.fromJson(response.errorBody()?.charStream(), GithubErrorResponse::class.java)
-        return GithubApiException(githubErr)
+        return GithubApiException(response.code(), githubErr)
     }
 
 }

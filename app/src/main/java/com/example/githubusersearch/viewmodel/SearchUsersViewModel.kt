@@ -1,5 +1,7 @@
 package com.example.githubusersearch.viewmodel
 
+import androidx.annotation.VisibleForTesting
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations.map
 import androidx.lifecycle.Transformations.switchMap
@@ -31,6 +33,11 @@ class SearchUsersViewModel(private val githubRepository: GithubRepository) : Vie
 
     fun retrySearch() {
         this.query.postValue(query.value)
+    }
+
+    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+    fun getSearchQuery(): LiveData<String> {
+        return query
     }
 
 }
