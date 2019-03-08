@@ -39,8 +39,8 @@
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/github_user_list_swipe_to_refresh"
-            android:layout_height="match_parent"
-            android:layout_width="match_parent">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/github_users_list_rv"
@@ -52,24 +52,35 @@
         <FrameLayout
             android:id="@+id/empty_list_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:padding="10dp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="17sp"
-                android:text="@string/no_user_found_search_query" />
+                android:text="@string/no_user_found_search_query"
+                android:textSize="17sp" />
         </FrameLayout>
 
         <FrameLayout
             android:id="@+id/welcome_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:padding="10dp">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="17sp"
-                android:text="@string/welcome_search" />
+                android:text="@string/welcome_search"
+                android:textSize="17sp" />
         </FrameLayout>
+
+        <include
+            android:id="@+id/error_view"
+            layout="@layout/error_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp" />
+
     </ViewFlipper>
 </androidx.constraintlayout.widget.ConstraintLayout>

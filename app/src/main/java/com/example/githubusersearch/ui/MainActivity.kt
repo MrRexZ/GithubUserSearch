@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import com.example.githubusersearch.api.github.GithubApiException
 import com.example.githubusersearch.vo.NetworkState
 import com.example.githubusersearch.vo.Status
+import kotlinx.android.synthetic.main.error_view.view.*
 
 
 class MainActivity : AppCompatActivity() {
@@ -49,6 +50,11 @@ class MainActivity : AppCompatActivity() {
 
     private fun showWelcomePage() {
         content_view_flipper.displayedChild = 2
+    }
+
+    private fun showErrorPage(mainErrorText: String) {
+        content_view_flipper.displayedChild = 3
+        error_view.main_error_text.text = mainErrorText
     }
 
     private fun initPageTypeObsv() {
@@ -121,7 +127,7 @@ class MainActivity : AppCompatActivity() {
             if (it.status == Status.FAILED) {
                 if (it.exception is GithubApiException) {
                     val githubErrorResponse = it.exception.githubErrorResponse
-                    Toast.makeText(this, "Error:" + githubErrorResponse.errorMessage, Toast.LENGTH_LONG).show()
+                    showErrorPage("Error: " + githubErrorResponse.errorMessage)
                 }
             } else {
                 adapter.setNetworkState(it)

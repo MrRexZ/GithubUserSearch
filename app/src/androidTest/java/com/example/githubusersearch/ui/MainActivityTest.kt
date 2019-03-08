@@ -59,7 +59,7 @@ class MainActivityTest {
     @Test
     fun showSearchFailScreenIfSearchFail() {
         onView(withId(R.id.user_search_view)).perform(typeSearchViewText("\\")).perform(click())
-        //TODO: Implement handle of screen fail
+        onView(withId(R.id.error_view)).check(matches(isDisplayed()))
     }
 
 
