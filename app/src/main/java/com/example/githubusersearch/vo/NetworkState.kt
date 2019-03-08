@@ -12,6 +12,6 @@ data class NetworkState constructor(
     companion object {
         val LOADED = NetworkState(Status.SUCCESS)
         val LOADING = NetworkState(Status.RUNNING)
-        fun ERROR(exception: Exception) = NetworkState(Status.FAILED, exception)
+        fun error(exception: Exception) = NetworkState(Status.FAILED, exception)
     }
 }

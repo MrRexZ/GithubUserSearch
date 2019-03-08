@@ -6,7 +6,7 @@ import com.example.githubusersearch.api.github.GithubAPIService
 import com.example.githubusersearch.api.github.response.GithubUserItem
 import com.example.githubusersearch.vo.NetworkState
 
-//TODO: Implement retry mechanism on network ERROR
+//TODO: Implement retry mechanism on network error
 class GithubPageKeyDataSource(
     private val query: String,
     private val api: GithubAPIService
@@ -28,7 +28,7 @@ class GithubPageKeyDataSource(
             postNetworkState(NetworkState.LOADED)
         }, onFailure = {
             //TODO: Implement failure handling
-            postNetworkState(NetworkState.ERROR(it))
+            postNetworkState(NetworkState.error(it))
         })
     }
 
@@ -42,7 +42,7 @@ class GithubPageKeyDataSource(
             postNetworkState(NetworkState.LOADED)
         }, onFailure = {
             //TODO: Implement failure handling
-            postNetworkState(NetworkState.ERROR(it))
+            postNetworkState(NetworkState.error(it))
         })
     }
 

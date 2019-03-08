@@ -54,7 +54,7 @@ class SearchUsersViewModelTest {
         stubSearchQueryUnsuccessfull(expectedException)
         viewModel.showSearchRes("\\")
         verify(networkState).onChanged(
-            NetworkState.ERROR(expectedException)
+            NetworkState.error(expectedException)
         )
     }
 
@@ -80,7 +80,7 @@ class SearchUsersViewModelTest {
         val networkStateMock: MutableLiveData<NetworkState> = MutableLiveData()
         val pageListHasDataMock: MutableLiveData<Boolean> = MutableLiveData()
         whenever(githubRepository.searchUsers("\\")).then {
-            networkStateMock.value = NetworkState.ERROR(expectedException)
+            networkStateMock.value = NetworkState.error(expectedException)
             Listing<GithubUserItem>(mock(), networkStateMock, pageListHasDataMock)
         }
     }
